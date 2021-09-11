@@ -1,5 +1,3 @@
-package algo;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,33 +16,17 @@ public class bj_11047 {
 		N = Integer.parseInt(st.nextToken());
 		K = Integer.parseInt(st.nextToken());
 		
-		int[] coins = new int[N];
+		int[] coins = new int[N];	// 동전의 종류
 		for(int n=0; n<N; n++) {
 			coins[n] = Integer.parseInt(br.readLine());
 		}
 		
-		int start = 0;	// 비교를 시작할 값
-		for (int i : coins) {
-			if(i>K) {
-				start = i-1;
+		int cnt=0;	// 사용되는 최소 동전의 개수
+		for(int c=coins.length-1; c>-1; c--) {	// 동전 종류가 하나이면서, 값이 동전크기와 같을 경우 -> coins 배열의 인덱스가 0이기 때문에 -1보다 작을 경우여야함
+			cnt += K/coins[c];
+			K = K%coins[c];
+			if(K==0) {	// 불필요한 연산 줄이기
 				break;
-			}
-		}
-		
-		for(int i=0; i<coins.length; i++) {
-			if(coins[i]>K) {
-				start = i-1;
-				break;
-			}else {
-				start = i;
-			}
-		}
-		
-		int cnt=0;	// 동전의 개수
-		while(K!=0) {
-			for(int c=start; c>0; c--) {
-				cnt += K/coins[c];
-				K = K%coins[c];
 			}
 		}
 		
