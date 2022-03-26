@@ -1,9 +1,9 @@
-package Simulation;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.LinkedList;
 import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class bj_1713 {
@@ -20,41 +20,43 @@ public class bj_1713 {
 		S = Integer.parseInt(br.readLine());
 		
 		PriorityQueue<Student> pq = new PriorityQueue<>();
-		Student[] check = new Student[101];
-		int count = 0;
+		int[] check = new int[101];
 		st = new StringTokenizer(br.readLine());
 		for(int s=0; s<S; s++) {
 			int student = Integer.parseInt(st.nextToken());
+			int size = pq.size();
 			
-			if(count<N) {
-				if(check[student]==null) {
-					count++;
-					check[student] = new Student(s, student, 1);
-				}else {
-					check[student].cnt = check[student].cnt+1;
+			if(check[student]>0) {
+				check[student]++;
+				Queue<Student> temp = new LinkedList<>();
+				while(true) {
+					Student update = pq.poll();
+					if(update.num==student) {
+						pq.add(new Student(update.time, student, check[student]));
+						while(!temp.isEmpty()) {
+							pq.add(temp.poll());
+						}
+						break;
+					}else {
+						temp.add(update);
+					}
 				}
 			}else {
-				if(check[student]!=null && check[student].cnt>0) {
-					check[student].cnt = check[student].cnt+1;
-				}else {
-					Student current =null;
-					while(true) {
-						current = pq.poll();
-						if(check[current.num].cnt==current.cnt && check[current.num].time == current.time) break;
-					}
-					check[current.num] = null;
-					check[student] = new Student(s, student, 1);
+				if(size>=N) {
+					Student out = pq.poll();
+					check[out.num] = 0;
 				}
+				check[student] = 1;
+				pq.add(new Student(s, student, 1));
 			}
-			pq.add(check[student]);			
 		}
 		
 		for(int s=0; s<check.length; s++) {
-			if(check[s]!=null && check[s].cnt>0) {
+			if(check[s]>0) {
 				sb.append(s).append(" ");
 			}
 		}
-		System.out.println(sb);
+		System.out.println(sb);	
 	}
 	
 	static class Student implements Comparable<Student>{
