@@ -58,23 +58,20 @@ public class bj_16235 {
 			for(int c=0; c<N; c++) {
 				Dot current = new Dot(r,c);
 				if(trees.containsKey(current)) {	
-					if(trees.get(current).size()>0) {
-						List<Integer> temp = new LinkedList<>();
-						for(int i=0; i<trees.get(current).size(); i++) {
-							int age = trees.get(current).poll();
-							if(map[r][c]>=age) {
-								map[r][c] -= age;
-								temp.add(age+1);
-							}else {
-								die.add(new Tree(r,c, (age/2)));
-							}
+					List<Integer> temp = new LinkedList<>();
+					for (int i = 0; i < trees.get(current).size(); i++) {
+						int age = trees.get(current).poll();
+						if (map[r][c] >= age) {
+							map[r][c] -= age;
+							temp.add(age + 1);
+						} else {
+							die.add(new Tree(r, c, (age / 2)));
 						}
-						
-						for(int t=0; t<temp.size(); t++) {
-							trees.get(new Dot(r,c)).add(temp.get(t));
-						}
-					}else {
-						trees.remove(current);
+					}
+					
+					if(trees.)
+					for (int t = 0; t < temp.size(); t++) {
+						trees.get(new Dot(r, c)).add(temp.get(t));
 					}
 				}
 			}
