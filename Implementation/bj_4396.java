@@ -14,37 +14,50 @@ public class bj_4396 {
 		// 지뢰찾기
 		N = Integer.parseInt(br.readLine());
 		map = new char[N][N];
-		
-		for(int r=0; r<N; r++) {
+
+		for (int r = 0; r < N; r++) {
 			String str = br.readLine();
-			for(int c=0; c<N; c++) {
+			for (int c = 0; c < N; c++) {
 				map[r][c] = str.charAt(c);
 			}
 		}
-		
-		int[][] deltas = {{1,0},{1,1},{1,-1},{-1,0},{-1,1},{-1,-1},{0,-1},{0,1}};
+
+		int[][] deltas = { { 1, 0 }, { 1, 1 }, { 1, -1 }, { -1, 0 }, { -1, 1 }, { -1, -1 }, { 0, -1 }, { 0, 1 } };
 		boolean check = false;
 		int[][] result = new int[N][N];
-		for(int r=0; r<N; r++) {
+		for (int r = 0; r < N; r++) {
 			String str = br.readLine();
-			for(int c=0; c<N; c++) {
+			for (int c = 0; c < N; c++) {
 				char state = str.charAt(c);
-				if(state=='x' && map[r][c]=='*') {
-					sb.append("*");
-				}else if(state=='x'){
-					int cnt = 0;
-					for(int d=0; d<8; d++) {
-						int nr = r + deltas[d][0];
-						int nc = c + deltas[d][1];
-								
-						if(isIn(nr,nc) && map[nr][nc]=='*') {
-							cnt++;
+				if (state == 'x') {
+					if (map[r][c] == '*') {
+						check = true;
+					}else {
+						int cnt = 0;
+						for (int d = 0; d < 8; d++) {
+							int nr = r + deltas[d][0];
+							int nc = c + deltas[d][1];
+	
+							if (isIn(nr, nc) && map[nr][nc] == '*') {
+								cnt++;
+							}
 						}
+						result[r][c] = cnt;
 					}
-					sb.append(cnt);
 				} else {
-					sb.append('.');
+					result[r][c] = -1;
 				}
+			}
+		}
+		
+		for(int r=0; r<N; r++) {
+			for(int c=0; c<N; c++) {
+				if(check && map[r][c]=='*')
+					sb.append("*");
+				else if(result[r][c]==-1)
+					sb.append(".");
+				else
+					sb.append(result[r][c]);
 			}
 			sb.append("\n");
 		}
